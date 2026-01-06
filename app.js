@@ -18,53 +18,71 @@ const storage = getStorage(app);
 const lista = document.getElementById("lista");
 const modal = document.getElementById("modal");
 const btnAdd = document.getElementById("btnAdd");
-const salvar = document.getElementById("salvar");
 const cancelar = document.getElementById("cancelar");
-const toast = document.getElementById("toast");
+const salvar = document.getElementById("salvar");
+const foto = document.getElementById("foto");
+const msgFoto = document.getElementById("msgFoto");
+const msgSucesso = document.getElementById("msgSucesso");
+
+let categoriaAtual = "Todos";
 
 btnAdd.onclick = () => modal.style.display = "flex";
 cancelar.onclick = () => modal.style.display = "none";
 
-const roupasRef = collection(db, "roupas");
+foto.onchange = () => msgFoto.innerText = "📸 Imagem carregada";
 
-onSnapshot(roupasRef, snap => {
-  lista.innerHTML = "";
-  snap.forEach(doc => {
-    const r = doc.data();
-    lista.innerHTML += `
-      <div class="card">
-        <img src="${r.img}">
-        <b>${r.tipo}</b><br>
-        Tam: ${r.tamanho}<br>
-        Qtde: ${r.quantidade}
-      </div>
-    `;
-  });
+document.querySelectorAll("nav button").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("ativo"));
+    btn.classList.add("ativo");
+    categoriaAtual = btn.dataset.cat;
+    render();
+  };
 });
 
+const roupasRef = collection(db, "roupas");
+let roupas = [];
+
+onSnapshot(roupasRef, snap => {
+  roupas = [];
+  snap.forEach(doc => roupas.push(doc.data()));
+  render();
+});
+
+function render() {
+  lista.innerHTML = "";
+  roupas
+    .filter(r => categoriaAtual === "Todos" || r.tipo === categoriaAtual)
+    .forEach(r => {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <img src="${r.img}">
+        <strong>${r.tipo}</strong><br>
+        Tam: ${r.tamanho}<br>
+        Qtd: ${r.quantidade}
+      `;
+      lista.appendChild(div);
+    });
+}
+
 salvar.onclick = async () => {
-  const foto = document.getElementById("foto").files[0];
-  const tipo = document.getElementById("tipo").value;
-  const tamanho = document.getElementById("tamanho").value;
-  const quantidade = document.getElementById("quantidade").value;
+  if (!foto.files.length) return alert("Selecione a foto");
 
-  if (!foto || !tipo || !tamanho || !quantidade) {
-    alert("Preencha tudo");
-    return;
-  }
-
-  const imgRef = ref(storage, `roupas/${Date.now()}_${foto.name}`);
-  await uploadBytes(imgRef, foto);
+  const imgRef = ref(storage, "roupas/" + Date.now());
+  await uploadBytes(imgRef, foto.files[0]);
   const url = await getDownloadURL(imgRef);
 
   await addDoc(roupasRef, {
     img: url,
-    tipo,
-    tamanho,
-    quantidade
+    tipo: tipo.value,
+    tamanho: tamanho.value,
+    quantidade: quantidade.value
   });
 
-  modal.style.display = "none";
-  toast.style.display = "block";
-  setTimeout(() => toast.style.display = "none", 1500);
+  msgSucesso.style.display = "block";
+  setTimeout(() => {
+    msgSucesso.style.display = "none";
+    modal.style.display = "none";
+  }, 1200);
 };

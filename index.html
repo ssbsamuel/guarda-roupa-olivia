@@ -12,24 +12,24 @@
   👶 Guarda-Roupa da Olívia
 </header>
 
-<nav id="filtros">
-  <button class="active">Todos</button>
-  <button>Laços</button>
-  <button>Body</button>
-  <button>Calça/Short</button>
-  <button>Macacão</button>
-  <button>Jardineira</button>
-  <button>Vestido</button>
-  <button>Conjunto</button>
-  <button>Meia/Luva</button>
-  <button>Sapato</button>
-  <button>Cueiro</button>
-  <button>Cobertor</button>
-  <button>Lencol</button>
-  <button>Toalha de Banho</button>
-  <button>Pano de Boca</button>
-  <button>Kit Higiene</button>
-  <button>Fraldas</button>
+<nav id="categorias">
+  <button class="ativo" data-cat="Todos">Todos</button>
+  <button data-cat="Laços">Laços</button>
+  <button data-cat="Body">Body</button>
+  <button data-cat="Calça/Short">Calça/Short</button>
+  <button data-cat="Macacão">Macacão</button>
+  <button data-cat="Jardineira">Jardineira</button>
+  <button data-cat="Vestido">Vestido</button>
+  <button data-cat="Conjunto">Conjunto</button>
+  <button data-cat="Meia/Luva">Meia/Luva</button>
+  <button data-cat="Sapato">Sapato</button>
+  <button data-cat="Cueiro">Cueiro</button>
+  <button data-cat="Cobertor">Cobertor</button>
+  <button data-cat="Lencol">Lencol</button>
+  <button data-cat="Toalha de Banho">Toalha de Banho</button>
+  <button data-cat="Pano de Boca">Pano de Boca</button>
+  <button data-cat="Kit Higiene">Kit Higiene</button>
+  <button data-cat="Fraldas">Fraldas</button>
 </nav>
 
 <main id="lista"></main>
@@ -37,12 +37,12 @@
 <button id="btnAdd">+</button>
 
 <!-- MODAL -->
-<div class="modal" id="modal">
+<div id="modal">
   <div class="modal-box">
     <h2>Adicionar roupa</h2>
 
-    <input type="file" id="foto" />
-    <p id="msgFoto"></p>
+    <input type="file" id="foto" accept="image/*">
+    <small id="msgFoto"></small>
 
     <select id="tipo">
       <option value="">Selecione o tipo</option>
@@ -64,15 +64,15 @@
       <option>Fraldas</option>
     </select>
 
-    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M...)" />
-    <input type="number" id="quantidade" placeholder="Quantidade" />
+    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M...)">
+    <input type="number" id="quantidade" placeholder="Quantidade">
 
     <button id="salvar">Salvar</button>
     <button id="cancelar">Cancelar</button>
+
+    <div id="msgSucesso">Adicionado com sucesso ✅</div>
   </div>
 </div>
-
-<div id="toast">Adicionado com sucesso ✅</div>
 
 <script type="module" src="app.js"></script>
 </body>
