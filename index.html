@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Guarda-Roupa da Olívia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c4b5fd">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>👶 Guarda-Roupa da Olívia</header>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+  <h2>Bem-vindos 💜</h2>
+  <p>Entre com sua conta Google</p>
+  <button id="btnGoogle">Entrar com Google</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <div class="filtros" id="filtros"></div>
+  <main id="lista"></main>
+  <button class="fab" id="btnAdd">+</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>Adicionar roupa</h3>
+
+    <input type="file" id="foto" accept="image/*">
+
+    <select id="tipo"></select>
+
+    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M)">
+    <input type="number" id="quantidade" placeholder="Quantidade">
+
+    <button id="salvar">Salvar</button>
+    <button id="cancelar">Cancelar</button>
+  </div>
+</div>
+
+<div id="msg"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
