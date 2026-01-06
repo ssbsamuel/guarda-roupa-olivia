@@ -1,88 +1,101 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+const categorias = [
+  "Todos","Laços","Body","Calça/Short","Macacão","Jardineira",
+  "Vestido","Conjunto","Meia/Luva","Sapato","Cueiro",
+  "Cobertor","Lencol","Toalha de Banho","Pano de Boca",
+  "Kit Higiene","Fraldas"
+];
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDSk5DdL6zAkl9VO9IcNtMjXXNzkhBaZGk",
-  authDomain: "guarda-roupa-olivia.firebaseapp.com",
-  projectId: "guarda-roupa-olivia",
-  storageBucket: "guarda-roupa-olivia.appspot.com",
-  messagingSenderId: "729428309934",
-  appId: "1:729428309934:web:fdc7d7bda0299143813a3f"
-};
+let roupas = JSON.parse(localStorage.getItem("roupas")) || [];
+let filtroAtual = "Todos";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-const lista = document.getElementById("lista");
+const filtrosDiv = document.getElementById("filtros");
+const listaDiv = document.getElementById("lista");
+const tipoSelect = document.getElementById("tipo");
 const modal = document.getElementById("modal");
-const btnAdd = document.getElementById("btnAdd");
-const cancelar = document.getElementById("cancelar");
-const salvar = document.getElementById("salvar");
-const foto = document.getElementById("foto");
-const msgFoto = document.getElementById("msgFoto");
-const msgSucesso = document.getElementById("msgSucesso");
+const msg = document.getElementById("msg");
 
-let categoriaAtual = "Todos";
-
-btnAdd.onclick = () => modal.style.display = "flex";
-cancelar.onclick = () => modal.style.display = "none";
-
-foto.onchange = () => msgFoto.innerText = "📸 Imagem carregada";
-
-document.querySelectorAll("nav button").forEach(btn => {
+categorias.forEach(cat => {
+  const btn = document.createElement("button");
+  btn.innerText = cat;
+  if (cat === "Todos") btn.classList.add("ativo");
   btn.onclick = () => {
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("ativo"));
+    filtroAtual = cat;
+    document.querySelectorAll(".filtros button").forEach(b => b.classList.remove("ativo"));
     btn.classList.add("ativo");
-    categoriaAtual = btn.dataset.cat;
-    render();
+    renderizar();
   };
+  filtrosDiv.appendChild(btn);
+
+  if (cat !== "Todos") {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.innerText = cat;
+    tipoSelect.appendChild(opt);
+  }
 });
 
-const roupasRef = collection(db, "roupas");
-let roupas = [];
+function abrirModal() {
+  modal.style.display = "block";
+}
 
-onSnapshot(roupasRef, snap => {
-  roupas = [];
-  snap.forEach(doc => roupas.push(doc.data()));
-  render();
-});
+function fecharModal() {
+  modal.style.display = "none";
+  msg.innerText = "";
+  document.getElementById("foto").value = "";
+  document.getElementById("tamanho").value = "";
+  document.getElementById("quantidade").value = "";
+}
 
-function render() {
-  lista.innerHTML = "";
+function salvar() {
+  const foto = document.getElementById("foto").files[0];
+  const tipo = tipoSelect.value;
+  const tamanho = document.getElementById("tamanho").value;
+  const quantidade = document.getElementById("quantidade").value;
+
+  if (!foto || !tipo || !tamanho || !quantidade) {
+    alert("Preencha tudo");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    roupas.push({
+      id: Date.now(),
+      tipo,
+      tamanho,
+      quantidade,
+      foto: reader.result
+    });
+    localStorage.setItem("roupas", JSON.stringify(roupas));
+    msg.innerText = "Adicionado com sucesso ✅";
+    renderizar();
+    setTimeout(fecharModal, 1200);
+  };
+  reader.readAsDataURL(foto);
+}
+
+function excluir(id) {
+  if (!confirm("Excluir item?")) return;
+  roupas = roupas.filter(r => r.id !== id);
+  localStorage.setItem("roupas", JSON.stringify(roupas));
+  renderizar();
+}
+
+function renderizar() {
+  listaDiv.innerHTML = "";
   roupas
-    .filter(r => categoriaAtual === "Todos" || r.tipo === categoriaAtual)
+    .filter(r => filtroAtual === "Todos" || r.tipo === filtroAtual)
     .forEach(r => {
       const div = document.createElement("div");
       div.className = "card";
       div.innerHTML = `
-        <img src="${r.img}">
-        <strong>${r.tipo}</strong><br>
-        Tam: ${r.tamanho}<br>
-        Qtd: ${r.quantidade}
+        <img src="${r.foto}">
+        <small>${r.tipo}</small>
+        <small>${r.tamanho} | Qtde: ${r.quantidade}</small>
+        <button onclick="excluir(${r.id})">Excluir</button>
       `;
-      lista.appendChild(div);
+      listaDiv.appendChild(div);
     });
 }
 
-salvar.onclick = async () => {
-  if (!foto.files.length) return alert("Selecione a foto");
-
-  const imgRef = ref(storage, "roupas/" + Date.now());
-  await uploadBytes(imgRef, foto.files[0]);
-  const url = await getDownloadURL(imgRef);
-
-  await addDoc(roupasRef, {
-    img: url,
-    tipo: tipo.value,
-    tamanho: tamanho.value,
-    quantidade: quantidade.value
-  });
-
-  msgSucesso.style.display = "block";
-  setTimeout(() => {
-    msgSucesso.style.display = "none";
-    modal.style.display = "none";
-  }, 1200);
-};
+renderizar();

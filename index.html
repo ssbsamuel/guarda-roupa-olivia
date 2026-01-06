@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guarda-Roupa da Olívia</title>
-  <link rel="stylesheet" href="estilos.css" />
+  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
@@ -12,68 +12,32 @@
   👶 Guarda-Roupa da Olívia
 </header>
 
-<nav id="categorias">
-  <button class="ativo" data-cat="Todos">Todos</button>
-  <button data-cat="Laços">Laços</button>
-  <button data-cat="Body">Body</button>
-  <button data-cat="Calça/Short">Calça/Short</button>
-  <button data-cat="Macacão">Macacão</button>
-  <button data-cat="Jardineira">Jardineira</button>
-  <button data-cat="Vestido">Vestido</button>
-  <button data-cat="Conjunto">Conjunto</button>
-  <button data-cat="Meia/Luva">Meia/Luva</button>
-  <button data-cat="Sapato">Sapato</button>
-  <button data-cat="Cueiro">Cueiro</button>
-  <button data-cat="Cobertor">Cobertor</button>
-  <button data-cat="Lencol">Lencol</button>
-  <button data-cat="Toalha de Banho">Toalha de Banho</button>
-  <button data-cat="Pano de Boca">Pano de Boca</button>
-  <button data-cat="Kit Higiene">Kit Higiene</button>
-  <button data-cat="Fraldas">Fraldas</button>
-</nav>
+<section class="filtros" id="filtros"></section>
 
-<main id="lista"></main>
+<button class="btn-add" onclick="abrirModal()">+</button>
 
-<button id="btnAdd">+</button>
+<section class="lista" id="lista"></section>
 
 <!-- MODAL -->
-<div id="modal">
-  <div class="modal-box">
+<div class="modal" id="modal">
+  <div class="modal-conteudo">
     <h2>Adicionar roupa</h2>
 
     <input type="file" id="foto" accept="image/*">
-    <small id="msgFoto"></small>
 
-    <select id="tipo">
-      <option value="">Selecione o tipo</option>
-      <option>Laços</option>
-      <option>Body</option>
-      <option>Calça/Short</option>
-      <option>Macacão</option>
-      <option>Jardineira</option>
-      <option>Vestido</option>
-      <option>Conjunto</option>
-      <option>Meia/Luva</option>
-      <option>Sapato</option>
-      <option>Cueiro</option>
-      <option>Cobertor</option>
-      <option>Lencol</option>
-      <option>Toalha de Banho</option>
-      <option>Pano de Boca</option>
-      <option>Kit Higiene</option>
-      <option>Fraldas</option>
-    </select>
+    <select id="tipo"></select>
 
-    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M...)">
+    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M, G...)">
+
     <input type="number" id="quantidade" placeholder="Quantidade">
 
-    <button id="salvar">Salvar</button>
-    <button id="cancelar">Cancelar</button>
+    <button onclick="salvar()">Salvar</button>
+    <button class="cancelar" onclick="fecharModal()">Cancelar</button>
 
-    <div id="msgSucesso">Adicionado com sucesso ✅</div>
+    <p class="msg" id="msg"></p>
   </div>
 </div>
 
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
