@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
@@ -8,8 +8,6 @@ const firebaseConfig = {
   authDomain: "guarda-roupa-olivia.firebaseapp.com",
   projectId: "guarda-roupa-olivia",
   storageBucket: "guarda-roupa-olivia.firebasestorage.app",
-  messagingSenderId: "729428309934",
-  appId: "1:729428309934:web:fdc7d7bda0299143813a3f"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -18,29 +16,25 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-const emailsPermitidos = [
-  "ssbsamuel1007@gmail.com",
-  "anajulia15ass@gmail.com"
-];
-
 const login = document.getElementById("login");
 const appDiv = document.getElementById("app");
+const btnGoogle = document.getElementById("btnGoogle");
 
-document.getElementById("btnGoogle").onclick = () =>
-  signInWithPopup(auth, provider);
+btnGoogle.onclick = () => signInWithPopup(auth, provider);
 
 onAuthStateChanged(auth, (user) => {
-  if (user && emailsPermitidos.includes(user.email)) {
+  if (user) {
     login.style.display = "none";
     appDiv.style.display = "block";
-  } else if (user) {
-    alert("Acesso não autorizado");
-    signOut(auth);
   }
 });
 
-const roupasCol = collection(db, "roupas");
 const lista = document.getElementById("lista");
+const modal = document.getElementById("modal");
+document.getElementById("btnAdd").onclick = () => modal.style.display = "flex";
+document.getElementById("cancelar").onclick = () => modal.style.display = "none";
+
+const roupasCol = collection(db, "roupas");
 
 onSnapshot(roupasCol, (snap) => {
   lista.innerHTML = "";
@@ -51,16 +45,11 @@ onSnapshot(roupasCol, (snap) => {
         <img src="${r.img}">
         <b>${r.tipo}</b><br>
         Tam: ${r.tamanho}<br>
-        Qtde: ${r.quantidade}
-      </div>`;
+        Qtd: ${r.quantidade}
+      </div>
+    `;
   });
 });
-
-document.getElementById("btnAdd").onclick = () =>
-  document.getElementById("modal").style.display = "flex";
-
-document.getElementById("cancelar").onclick = () =>
-  document.getElementById("modal").style.display = "none";
 
 document.getElementById("salvar").onclick = async () => {
   const foto = document.getElementById("foto").files[0];
@@ -68,13 +57,10 @@ document.getElementById("salvar").onclick = async () => {
   const tamanho = document.getElementById("tamanho").value;
   const quantidade = document.getElementById("quantidade").value;
 
-  if (!foto || !tipo || !tamanho || !quantidade) return;
-
-  const imgRef = ref(storage, `roupas/${Date.now()}`);
+  const imgRef = ref(storage, `roupas/${Date.now()}.jpg`);
   await uploadBytes(imgRef, foto);
   const url = await getDownloadURL(imgRef);
 
   await addDoc(roupasCol, { img: url, tipo, tamanho, quantidade });
-
-  document.getElementById("modal").style.display = "none";
+  modal.style.display = "none";
 };
