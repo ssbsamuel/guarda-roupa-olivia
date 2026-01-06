@@ -1,49 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Guarda-Roupa da Olívia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#c4b5fd">
-
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
 
 <header>👶 Guarda-Roupa da Olívia</header>
 
 <!-- LOGIN -->
-<div class="login" id="login">
+<div id="login">
   <h2>Bem-vindos 💜</h2>
   <p>Entre com sua conta Google</p>
   <button id="btnGoogle">Entrar com Google</button>
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none">
-  <div class="filtros" id="filtros"></div>
+<div id="app" style="display:none;">
+
+  <nav id="filtros">
+    <button class="active" data-tipo="Todos">Todos</button>
+    <button data-tipo="Laços">Laços</button>
+    <button data-tipo="Body">Body</button>
+    <button data-tipo="Calça/Short">Calça/Short</button>
+    <button data-tipo="Macacão">Macacão</button>
+    <button data-tipo="Jardineira">Jardineira</button>
+    <button data-tipo="Vestido">Vestido</button>
+    <button data-tipo="Conjunto">Conjunto</button>
+    <button data-tipo="Meia/Luva">Meia/Luva</button>
+    <button data-tipo="Sapato">Sapato</button>
+    <button data-tipo="Cueiro">Cueiro</button>
+    <button data-tipo="Cobertor">Cobertor</button>
+    <button data-tipo="Lencol">Lencol</button>
+    <button data-tipo="Toalha de Banho">Toalha de Banho</button>
+    <button data-tipo="Pano de Boca">Pano de Boca</button>
+    <button data-tipo="Kit Higiene">Kit Higiene</button>
+    <button data-tipo="Fraldas">Fraldas</button>
+  </nav>
+
   <main id="lista"></main>
-  <button class="fab" id="btnAdd">+</button>
-</div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <h3>Adicionar roupa</h3>
+  <button id="btnAdd">+</button>
 
-    <input type="file" id="foto" accept="image/*">
-
-    <select id="tipo"></select>
-
-    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M)">
-    <input type="number" id="quantidade" placeholder="Quantidade">
-
-    <button id="salvar">Salvar</button>
-    <button id="cancelar">Cancelar</button>
+  <!-- MODAL -->
+  <div id="modal">
+    <div class="modal-content">
+      <h3>Adicionar roupa</h3>
+      <input type="file" id="foto" accept="image/*">
+      <select id="tipo">
+        <option value="">Selecione o tipo</option>
+        <option>Laços</option><option>Body</option><option>Calça/Short</option>
+        <option>Macacão</option><option>Jardineira</option><option>Vestido</option>
+        <option>Conjunto</option><option>Meia/Luva</option><option>Sapato</option>
+        <option>Cueiro</option><option>Cobertor</option><option>Lencol</option>
+        <option>Toalha de Banho</option><option>Pano de Boca</option>
+        <option>Kit Higiene</option><option>Fraldas</option>
+      </select>
+      <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M...)">
+      <input type="number" id="quantidade" placeholder="Quantidade">
+      <button id="salvar">Salvar</button>
+      <button id="cancelar">Cancelar</button>
+    </div>
   </div>
-</div>
 
-<div id="msg"></div>
+</div>
 
 <script type="module" src="app.js"></script>
 </body>
