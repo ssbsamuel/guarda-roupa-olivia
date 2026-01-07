@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guarda-Roupa da Olivia</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Guarda-Roupa da Olívia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6a4bcf">
 </head>
-
 <body>
-  <header class="topo">
-    👶 Guarda-Roupa da Olivia
-  </header>
 
-  <section class="filtros" id="filtros"></section>
+<header>👶 Guarda-Roupa da Olívia</header>
 
-  <main class="lista" id="listaRoupas"></main>
+<nav id="filtros"></nav>
 
-  <button class="btn-add" id="abrirModal">+</button>
+<main id="lista"></main>
 
-  <!-- MODAL -->
-  <div class="modal-bg" id="modal">
-    <div class="modal">
-      <h2>Adicionar roupa</h2>
+<button id="btnAdd">+</button>
 
-      <input type="file" id="imagem" accept="image/*" />
-      <p id="msgImagem" class="msg-sucesso"></p>
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <h2>Adicionar roupa</h2>
 
-      <select id="tipo"></select>
+    <input type="file" id="foto" accept="image/*">
+    <p id="msgFoto"></p>
 
-      <input type="text" id="tamanho" placeholder="Tamanho (opcional)" />
-      <input type="number" id="quantidade" placeholder="Quantidade (opcional)" />
+    <select id="tipo"></select>
 
-      <button id="salvar">Salvar</button>
-      <button class="cancelar" id="cancelar">Cancelar</button>
-    </div>
+    <input type="text" id="tamanho" placeholder="Tamanho (opcional)">
+    <input type="number" id="quantidade" placeholder="Quantidade (opcional)">
+
+    <button id="salvar">Salvar</button>
+    <button id="cancelar">Cancelar</button>
   </div>
+</div>
 
-  <script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

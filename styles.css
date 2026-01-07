@@ -5,89 +5,79 @@
 
 body {
   margin: 0;
-  background: #f5f5f5;
+  background: #f4f2fb;
 }
 
-.topo {
+header {
   background: #6a4bcf;
   color: white;
-  padding: 15px;
+  padding: 16px;
   text-align: center;
   font-size: 18px;
 }
 
-.filtros {
-  padding: 10px;
+nav {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: center;
+  padding: 10px;
 }
 
-.filtros button {
-  padding: 8px 12px;
-  border-radius: 20px;
+nav button {
   border: 1px solid #6a4bcf;
   background: white;
-  cursor: pointer;
+  color: #6a4bcf;
+  padding: 6px 12px;
+  border-radius: 20px;
 }
 
-.filtros button.ativo {
+nav button.active {
   background: #6a4bcf;
   color: white;
 }
 
-.lista {
+main {
+  padding: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 12px;
-  padding: 10px;
 }
 
 .card {
   background: white;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 12px;
+  padding: 8px;
   text-align: center;
 }
 
 .card img {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-.card button {
-  margin-top: 5px;
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.btn-add {
+#btnAdd {
   position: fixed;
-  bottom: 20px;
   right: 20px;
-  background: #6a4bcf;
-  color: white;
-  border: none;
-  font-size: 24px;
+  bottom: 20px;
   width: 55px;
   height: 55px;
   border-radius: 50%;
+  border: none;
+  background: #6a4bcf;
+  color: white;
+  font-size: 28px;
 }
 
-.modal-bg {
-  display: none;
+#modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
-  align-items: center;
+  background: rgba(0,0,0,.5);
+  display: none;
   justify-content: center;
+  align-items: center;
 }
 
-.modal {
+.modal-box {
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -95,19 +85,15 @@ body {
   max-width: 400px;
 }
 
-.modal input,
-.modal select,
-.modal button {
+.modal-box input,
+.modal-box select,
+.modal-box button {
   width: 100%;
-  margin-top: 10px;
   padding: 10px;
+  margin-top: 8px;
 }
 
-.cancelar {
-  background: #ccc;
-}
-
-.msg-sucesso {
+#msgFoto {
   color: green;
   font-size: 14px;
 }
