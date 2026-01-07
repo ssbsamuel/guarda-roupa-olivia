@@ -1,50 +1,66 @@
-// 🔥 CONFIG FIREBASE (use a sua)
-firebase.initializeApp({
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_DOMINIO",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_BUCKET",
-});
+// =======================
+// FIREBASE INIT
+// =======================
+const firebaseConfig = {
+  apiKey: "AIzaSyDSk5DdL6zAkl9VO9IcNtMjXXNzkhBaZGk",
+  authDomain: "guarda-roupa-olivia.firebaseapp.com",
+  projectId: "guarda-roupa-olivia",
+  storageBucket: "guarda-roupa-olivia.firebasestorage.app",
+  messagingSenderId: "729428309934",
+  appId: "1:729428309934:web:fdc7d7bda0299143813a3f"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-const categorias = [
-  "Todos","Laços","Body","Calça/Short","Macacão","Jardineira",
-  "Vestido","Conjunto","Meia/Luva","Sapato","Cueiro",
-  "Cobertor","Lencol","Toalha de Banho","Pano de Boca","Kit Higiene","Fraldas"
-];
+// =======================
+// VARIÁVEIS
+// =======================
+let filtroAtual = "Todos";
 
-const categoriasDiv = document.getElementById("categorias");
-const lista = document.getElementById("lista");
-const selectTipo = document.getElementById("tipo");
-
-categorias.forEach(c => {
-  const b = document.createElement("button");
-  b.textContent = c;
-  if (c === "Todos") b.classList.add("ativo");
-  b.onclick = () => filtrar(c, b);
-  categoriasDiv.appendChild(b);
-
-  if (c !== "Todos") {
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    selectTipo.appendChild(opt);
-  }
-});
-
+// =======================
+// MODAL
+// =======================
 function abrirModal() {
-  document.getElementById("modalBg").style.display = "block";
+  document.getElementById("modalBg").style.display = "flex";
+}
+
+function resetModal() {
+  document.getElementById("imagem").value = "";
+  document.getElementById("tamanho").value = "";
+  document.getElementById("quantidade").value = "";
+  document.getElementById("msgUpload").innerText = "";
+
+  const btn = document.getElementById("btnSalvar");
+  btn.disabled = false;
+  btn.textContent = "Salvar";
 }
 
 function fecharModal() {
+  resetModal();
   document.getElementById("modalBg").style.display = "none";
 }
 
+// =======================
+// UPLOAD IMAGE FEEDBACK
+// =======================
+document.getElementById("imagem").addEventListener("change", () => {
+  document.getElementById("msgUpload").innerText = "";
+});
+
+// =======================
+// SALVAR ROUPA
+// =======================
 async function salvar() {
-  const file = document.getElementById("imagem").files[0];
-  if (!file) return alert("Escolha uma imagem");
+  const fileInput = document.getElementById("imagem");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Escolha uma imagem");
+    return;
+  }
 
   const btn = document.getElementById("btnSalvar");
   btn.disabled = true;
@@ -54,11 +70,16 @@ async function salvar() {
     const nomeUnico = Date.now() + "_" + file.name;
     const ref = storage.ref("roupas/" + nomeUnico);
 
+    // Upload REAL
     await ref.put(file);
+
+    // Agora sim a imagem foi carregada
+    document.getElementById("msgUpload").innerText = "📸 Imagem carregada";
+
     const url = await ref.getDownloadURL();
 
     await db.collection("roupas").add({
-      tipo: selectTipo.value,
+      tipo: document.getElementById("tipo").value,
       tamanho: document.getElementById("tamanho").value || "",
       quantidade: document.getElementById("quantidade").value || "",
       imagem: url,
@@ -66,38 +87,70 @@ async function salvar() {
     });
 
     fecharModal();
-    btn.disabled = false;
-    btn.textContent = "Salvar";
-    carregar();
 
-  } catch (e) {
+  } catch (erro) {
+    console.error(erro);
     alert("Erro ao salvar");
-    console.error(e);
-    btn.disabled = false;
-    btn.textContent = "Salvar";
+    resetModal();
   }
 }
 
-function carregar() {
+// =======================
+// LISTAR ROUPAS (REALTIME)
+// =======================
+db.collection("roupas").orderBy("criadoEm", "desc").onSnapshot(() => {
+  carregar();
+});
+
+async function carregar() {
+  const lista = document.getElementById("lista");
   lista.innerHTML = "";
-  db.collection("roupas").orderBy("criadoEm","desc").onSnapshot(snap => {
-    lista.innerHTML = "";
-    snap.forEach(doc => {
-      const d = doc.data();
-      lista.innerHTML += `
-        <div class="card">
-          <img src="${d.imagem}">
-          <p>${d.tipo}</p>
-          <p>${d.tamanho} | Qtde: ${d.quantidade}</p>
+
+  const snapshot = await db.collection("roupas").orderBy("criadoEm", "desc").get();
+
+  snapshot.forEach(doc => {
+    const r = doc.data();
+
+    if (filtroAtual !== "Todos" && r.tipo !== filtroAtual) return;
+
+    lista.innerHTML += `
+      <div class="card">
+        <img src="${r.imagem}">
+        <div class="info">
+          <strong>${r.tipo}</strong><br>
+          ${r.tamanho ? r.tamanho + " | " : ""}Qtde: ${r.quantidade || "1"}
         </div>
-      `;
-    });
+        <button onclick="excluir('${doc.id}', '${r.imagem}')">Excluir</button>
+      </div>
+    `;
   });
 }
 
-function filtrar(cat, btn) {
-  document.querySelectorAll(".categorias button").forEach(b => b.classList.remove("ativo"));
-  btn.classList.add("ativo");
+// =======================
+// EXCLUIR
+// =======================
+async function excluir(id, imagem) {
+  if (!confirm("Deseja excluir?")) return;
+
+  await db.collection("roupas").doc(id).delete();
+
+  try {
+    await storage.refFromURL(imagem).delete();
+  } catch (e) {
+    console.warn("Imagem já removida");
+  }
 }
 
-carregar();
+// =======================
+// FILTRO
+// =======================
+function filtrar(tipo, btn) {
+  filtroAtual = tipo;
+
+  document.querySelectorAll(".filtro button").forEach(b => {
+    b.classList.remove("ativo");
+  });
+
+  btn.classList.add("ativo");
+  carregar();
+}
