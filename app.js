@@ -1,50 +1,87 @@
-// ==========================
-// Firebase imports
-// ==========================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  onSnapshot,
-  deleteDoc,
-  doc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const filtros = document.querySelectorAll(".filtro");
+const lista = document.getElementById("lista");
+const abrirModal = document.getElementById("abrirModal");
+const modal = document.getElementById("modal");
+const salvarBtn = document.getElementById("salvar");
+const cancelarBtn = document.getElementById("cancelar");
 
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+const inputFoto = document.getElementById("foto");
+const inputTipo = document.getElementById("tipo");
+const inputTamanho = document.getElementById("tamanho");
+const inputQuantidade = document.getElementById("quantidade");
 
-// ==========================
-// Firebase config (SEU)
-// ==========================
-const firebaseConfig = {
-  apiKey: "AIzaSyDSk5DdL6zAkl9VO9IcNtMjXXNzkhBaZGk",
-  authDomain: "guarda-roupa-olivia.firebaseapp.com",
-  projectId: "guarda-roupa-olivia",
-  storageBucket: "guarda-roupa-olivia.firebasestorage.app",
-  messagingSenderId: "729428309934",
-  appId: "1:729428309934:web:fdc7d7bda0299143813a3f"
+let roupas = [];
+let filtroAtivo = "Todos";
+
+/* FILTROS */
+filtros.forEach(botao => {
+  botao.addEventListener("click", () => {
+    filtros.forEach(b => b.classList.remove("ativo"));
+    botao.classList.add("ativo");
+    filtroAtivo = botao.dataset.tipo;
+    renderizar();
+  });
+});
+
+/* MODAL */
+abrirModal.onclick = () => modal.style.display = "block";
+cancelarBtn.onclick = fecharModal;
+
+modal.onclick = (e) => {
+  if (e.target === modal) fecharModal();
 };
 
-// ==========================
-// Init Firebase
-// ==========================
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
+function fecharModal() {
+  modal.style.display = "none";
+  inputFoto.value = "";
+  inputTipo.value = "";
+  inputTamanho.value = "";
+  inputQuantidade.value = "";
+}
 
-// ==========================
-// DOM
-// ==========================
-const fileInput = document.getElementById("foto");
-const tipoSelect = document.getElementById("tipo");
-const tamanhoInput = document.getElementById("tamanho");
-const quantidadeInput = document.getElementById("quantidade");
-const salvarBtn = document.getElementById("salvar");
-const cancelarBtn = document.get
+/* SALVAR */
+salvarBtn.onclick = () => {
+  if (!inputFoto.files[0] || !inputTipo.value) {
+    alert("Selecione imagem e tipo");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    roupas.push({
+      tipo: inputTipo.value,
+      tamanho: inputTamanho.value || "-",
+      quantidade: inputQuantidade.value || 1,
+      imagem: reader.result
+    });
+    fecharModal();
+    renderizar();
+  };
+  reader.readAsDataURL(inputFoto.files[0]);
+};
+
+/* RENDER */
+function renderizar() {
+  lista.innerHTML = "";
+
+  const filtradas = filtroAtivo === "Todos"
+    ? roupas
+    : roupas.filter(r => r.tipo === filtroAtivo);
+
+  filtradas.forEach((r, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${r.imagem}">
+      <p>${r.tipo}</p>
+      <p>Tam: ${r.tamanho}</p>
+      <p>Qtd: ${r.quantidade}</p>
+      <button data-i="${i}">Excluir</button>
+    `;
+    card.querySelector("button").onclick = () => {
+      roupas.splice(i, 1);
+      renderizar();
+    };
+    lista.appendChild(card);
+  });
+}
