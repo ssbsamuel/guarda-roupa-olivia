@@ -3,77 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guarda-Roupa da Olívia</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Guarda-Roupa da Olivia</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
 
-  <header>
-    👶 Guarda-Roupa da Olívia
+<body>
+  <header class="topo">
+    👶 Guarda-Roupa da Olivia
   </header>
 
-  <!-- FILTROS -->
-  <div class="filtros">
-    <button class="filtro ativo" data-tipo="Todos">Todos</button>
-    <button class="filtro" data-tipo="Laços">Laços</button>
-    <button class="filtro" data-tipo="Body">Body</button>
-    <button class="filtro" data-tipo="Calça/Short">Calça/Short</button>
-    <button class="filtro" data-tipo="Macacão">Macacão</button>
-    <button class="filtro" data-tipo="Jardineira">Jardineira</button>
-    <button class="filtro" data-tipo="Vestido">Vestido</button>
-    <button class="filtro" data-tipo="Conjunto">Conjunto</button>
-    <button class="filtro" data-tipo="Meia/Luva">Meia/Luva</button>
-    <button class="filtro" data-tipo="Sapato">Sapato</button>
-    <button class="filtro" data-tipo="Cueiro">Cueiro</button>
-    <button class="filtro" data-tipo="Cobertor">Cobertor</button>
-    <button class="filtro" data-tipo="Lençol">Lençol</button>
-    <button class="filtro" data-tipo="Toalha de Banho">Toalha de Banho</button>
-    <button class="filtro" data-tipo="Pano de Boca">Pano de Boca</button>
-    <button class="filtro" data-tipo="Kit Higiene">Kit Higiene</button>
-    <button class="filtro" data-tipo="Fraldas">Fraldas</button>
-  </div>
+  <section class="filtros" id="filtros"></section>
 
-  <!-- LISTA -->
-  <div id="lista" class="lista"></div>
+  <main class="lista" id="listaRoupas"></main>
 
-  <!-- BOTÃO + -->
-  <button id="abrirModal" class="btn-add">+</button>
+  <button class="btn-add" id="abrirModal">+</button>
 
   <!-- MODAL -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
+  <div class="modal-bg" id="modal">
+    <div class="modal">
       <h2>Adicionar roupa</h2>
 
-      <input type="file" id="foto" accept="image/*" />
+      <input type="file" id="imagem" accept="image/*" />
+      <p id="msgImagem" class="msg-sucesso"></p>
 
-      <select id="tipo">
-        <option value="">Selecione o tipo</option>
-        <option>Laços</option>
-        <option>Body</option>
-        <option>Calça/Short</option>
-        <option>Macacão</option>
-        <option>Jardineira</option>
-        <option>Vestido</option>
-        <option>Conjunto</option>
-        <option>Meia/Luva</option>
-        <option>Sapato</option>
-        <option>Cueiro</option>
-        <option>Cobertor</option>
-        <option>Lençol</option>
-        <option>Toalha de Banho</option>
-        <option>Pano de Boca</option>
-        <option>Kit Higiene</option>
-        <option>Fraldas</option>
-      </select>
+      <select id="tipo"></select>
 
       <input type="text" id="tamanho" placeholder="Tamanho (opcional)" />
       <input type="number" id="quantidade" placeholder="Quantidade (opcional)" />
 
       <button id="salvar">Salvar</button>
-      <button id="cancelar" class="cancelar">Cancelar</button>
+      <button class="cancelar" id="cancelar">Cancelar</button>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
