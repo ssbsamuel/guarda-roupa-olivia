@@ -1,45 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guarda-Roupa da Olivia</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guarda-Roupa da Olívia</title>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header>
-  👶 Guarda-Roupa da Olivia
-</header>
+  <header class="topo">
+    👶 Guarda-Roupa da Olívia
+  </header>
 
-<section class="categorias" id="categorias"></section>
+  <!-- FILTROS -->
+  <section class="filtros" id="filtros">
+    <button class="filtro ativo" data-tipo="Todos">Todos</button>
+    <button class="filtro" data-tipo="Laços">Laços</button>
+    <button class="filtro" data-tipo="Body">Body</button>
+    <button class="filtro" data-tipo="Calça/Short">Calça/Short</button>
+    <button class="filtro" data-tipo="Macacão">Macacão</button>
+    <button class="filtro" data-tipo="Jardineira">Jardineira</button>
+    <button class="filtro" data-tipo="Vestido">Vestido</button>
+    <button class="filtro" data-tipo="Conjunto">Conjunto</button>
+    <button class="filtro" data-tipo="Meia/Luva">Meia/Luva</button>
+    <button class="filtro" data-tipo="Sapato">Sapato</button>
+    <button class="filtro" data-tipo="Cueiro">Cueiro</button>
+    <button class="filtro" data-tipo="Cobertor">Cobertor</button>
+    <button class="filtro" data-tipo="Lençol">Lençol</button>
+    <button class="filtro" data-tipo="Toalha de Banho">Toalha de Banho</button>
+    <button class="filtro" data-tipo="Pano de Boca">Pano de Boca</button>
+    <button class="filtro" data-tipo="Kit Higiene">Kit Higiene</button>
+    <button class="filtro" data-tipo="Fraldas">Fraldas</button>
+  </section>
 
-<section class="lista" id="lista"></section>
+  <!-- LISTA -->
+  <main class="lista" id="lista"></main>
 
-<button class="fab" onclick="abrirModal()">+</button>
+  <!-- BOTÃO + -->
+  <button id="abrirModal" class="btn-add">+</button>
 
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <h2>Adicionar roupa</h2>
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h2>Adicionar roupa</h2>
 
-    <input type="file" id="imagem" accept="image/*">
-    <p id="msgUpload"></p>
+      <input type="file" id="foto" accept="image/*" />
 
-    <select id="tipo"></select>
+      <select id="tipo">
+        <option value="">Selecione o tipo</option>
+        <option>Laços</option>
+        <option>Body</option>
+        <option>Calça/Short</option>
+        <option>Macacão</option>
+        <option>Jardineira</option>
+        <option>Vestido</option>
+        <option>Conjunto</option>
+        <option>Meia/Luva</option>
+        <option>Sapato</option>
+        <option>Cueiro</option>
+        <option>Cobertor</option>
+        <option>Lençol</option>
+        <option>Toalha de Banho</option>
+        <option>Pano de Boca</option>
+        <option>Kit Higiene</option>
+        <option>Fraldas</option>
+      </select>
 
-    <input type="text" id="tamanho" placeholder="Tamanho (opcional)">
-    <input type="number" id="quantidade" placeholder="Quantidade (opcional)">
+      <input type="text" id="tamanho" placeholder="Tamanho (opcional)" />
+      <input type="number" id="quantidade" placeholder="Quantidade (opcional)" />
 
-    <button id="btnSalvar" onclick="salvar()">Salvar</button>
-    <button class="cancelar" onclick="fecharModal()">Cancelar</button>
+      <button id="salvar">Salvar</button>
+      <button id="cancelar">Cancelar</button>
+    </div>
   </div>
-</div>
 
-<script src="app.js"></script>
+  <!-- JS (OBRIGATÓRIO type=module) -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
