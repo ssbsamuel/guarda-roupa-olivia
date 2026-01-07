@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Guarda-Roupa da Olívia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guarda-Roupa da Olivia</title>
+  <link rel="stylesheet" href="styles.css">
 
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
 <header>
-  👶 Guarda-Roupa da Olívia
+  👶 Guarda-Roupa da Olivia
 </header>
 
-<nav id="filtros"></nav>
+<section class="categorias" id="categorias"></section>
 
-<main id="lista"></main>
+<section class="lista" id="lista"></section>
 
-<button id="btnAdd">+</button>
+<button class="fab" onclick="abrirModal()">+</button>
 
-<!-- MODAL -->
-<div id="modal">
-  <div class="modal-box">
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
     <h2>Adicionar roupa</h2>
 
-    <input type="file" id="foto" accept="image/*" />
-    <div id="msgFoto"></div>
+    <input type="file" id="imagem" accept="image/*">
+    <p id="msgUpload"></p>
 
     <select id="tipo"></select>
 
-    <input type="text" id="tamanho" placeholder="Tamanho (opcional)" />
-    <input type="number" id="quantidade" placeholder="Quantidade (opcional)" />
+    <input type="text" id="tamanho" placeholder="Tamanho (opcional)">
+    <input type="number" id="quantidade" placeholder="Quantidade (opcional)">
 
-    <button id="salvar">Salvar</button>
-    <button id="cancelar">Cancelar</button>
-
-    <div id="msgSucesso">✅ Adicionado com sucesso</div>
+    <button id="btnSalvar" onclick="salvar()">Salvar</button>
+    <button class="cancelar" onclick="fecharModal()">Cancelar</button>
   </div>
 </div>
 
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

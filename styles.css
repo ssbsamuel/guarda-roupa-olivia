@@ -1,112 +1,88 @@
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
 
-body {
-  margin: 0;
-  background: #f5f5f5;
-}
+body { margin: 0; background: #f6f6f6; }
 
 header {
-  background: #6d4fd3;
+  background: #6c4ed9;
   color: white;
   padding: 15px;
   text-align: center;
   font-size: 18px;
 }
 
-nav {
+.categorias {
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 10px;
 }
 
-nav button {
-  border: 1px solid #6d4fd3;
-  background: white;
-  color: #6d4fd3;
-  padding: 6px 12px;
+.categorias button {
+  padding: 8px 14px;
   border-radius: 20px;
-  cursor: pointer;
+  border: 1px solid #6c4ed9;
+  background: white;
 }
 
-nav button.active {
-  background: #6d4fd3;
+.categorias .ativo {
+  background: #6c4ed9;
   color: white;
 }
 
-main {
+.lista {
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
 }
 
 .card {
   background: white;
-  border-radius: 12px;
-  padding: 8px;
+  border-radius: 10px;
+  padding: 10px;
   text-align: center;
 }
 
 .card img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
-.card button {
-  margin-top: 6px;
-  padding: 6px;
-}
-
-#btnAdd {
+.fab {
   position: fixed;
-  right: 20px;
   bottom: 20px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  border: none;
-  background: #6d4fd3;
+  right: 20px;
+  background: #6c4ed9;
   color: white;
-  font-size: 26px;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 28px;
 }
 
-#modal {
+.modal-bg {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
 }
 
-.modal-box {
+.modal {
   background: white;
-  padding: 15px;
+  margin: 60px auto;
+  padding: 20px;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
 }
 
-.modal-box input,
-.modal-box select,
-.modal-box button {
+.modal input, .modal select, .modal button {
   width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-}
-
-#msgFoto {
-  font-size: 14px;
-  color: green;
-}
-
-#msgSucesso {
-  display: none;
   margin-top: 10px;
-  color: green;
-  text-align: center;
+  padding: 10px;
+}
+
+.cancelar {
+  background: #ddd;
 }
