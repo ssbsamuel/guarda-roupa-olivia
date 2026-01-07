@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Guarda-Roupa da Olívia</title>
-  <link rel="stylesheet" href="estilos.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -12,32 +13,32 @@
   👶 Guarda-Roupa da Olívia
 </header>
 
-<section class="filtros" id="filtros"></section>
+<nav id="filtros"></nav>
 
-<button class="btn-add" onclick="abrirModal()">+</button>
+<main id="lista"></main>
 
-<section class="lista" id="lista"></section>
+<button id="btnAdd">+</button>
 
 <!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-conteudo">
+<div id="modal">
+  <div class="modal-box">
     <h2>Adicionar roupa</h2>
 
-    <input type="file" id="foto" accept="image/*">
+    <input type="file" id="foto" accept="image/*" />
+    <div id="msgFoto"></div>
 
     <select id="tipo"></select>
 
-    <input type="text" id="tamanho" placeholder="Tamanho (RN, P, M, G...)">
+    <input type="text" id="tamanho" placeholder="Tamanho (opcional)" />
+    <input type="number" id="quantidade" placeholder="Quantidade (opcional)" />
 
-    <input type="number" id="quantidade" placeholder="Quantidade">
+    <button id="salvar">Salvar</button>
+    <button id="cancelar">Cancelar</button>
 
-    <button onclick="salvar()">Salvar</button>
-    <button class="cancelar" onclick="fecharModal()">Cancelar</button>
-
-    <p class="msg" id="msg"></p>
+    <div id="msgSucesso">✅ Adicionado com sucesso</div>
   </div>
 </div>
 
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
